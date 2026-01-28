@@ -5,18 +5,18 @@ on:
     branches: [ "main", "master" ]
   pull_request:
     branches: [ "main", "master" ]
-  workflow_dispatch: # Esto te permite ejecutarlo manualmente desde la web
+  workflow_dispatch: # Permite ejecutarlo manualmente desde la pestaña Actions
 
 jobs:
   build:
-    name: Build on ${{ matrix.os }}
+    name: Build on ${{ matrix.os }} (Py ${{ matrix.python-version }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        # Compilamos para Windows (tu PC) y Linux (Colab)
+        # Compilamos para Windows (tu PC) y Linux (Colab/Servidores)
         os: [windows-latest, ubuntu-latest]
-        python-version: ['3.10', '3.11'] # Las versiones más comunes de ComfyUI
+        python-version: ['3.10', '3.11']
 
     steps:
       - name: Checkout code
@@ -29,19 +29,18 @@ jobs:
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: x86_64-pc-windows-msvc
 
       - name: Build Wheels
         uses: PyO3/maturin-action@v1
         with:
           command: build
           args: --release --out dist --interpreter python${{ matrix.python-version }}
-          # Si el Cargo.toml no está en la raíz, descomenta la siguiente línea y pon la ruta:
-          # working-directory: ./ruta_a_la_carpeta_con_cargo_toml
+          # IMPORTANTE: Aquí es donde estaba el error "missing field package"
+          # Apuntamos a la subcarpeta que contiene el código de la librería Python
+          working-directory: ./inox2d-python 
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: wheels-${{ matrix.os }}-python${{ matrix.python-version }}
-          path: dist/*.whl
+          path: inox2d-python/dist/*.whl
