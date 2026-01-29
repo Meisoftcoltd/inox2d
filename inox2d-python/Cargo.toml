@@ -1,0 +1,12 @@
+[package]
+name = "inox2d-python"
+version = "0.3.0"
+edition = "2021"
+
+[lib]
+name = "inox2d"
+crate-type = ["cdylib"]
+
+[dependencies]
+inox2d = { path = "../inox2d" }
+pyo3 = { version = "0.22", features = ["extension-module"] }
