@@ -13,8 +13,13 @@ jobs:
     strategy:
       matrix:
         target: [x86_64, aarch64]
+    env:
+      PYO3_USE_ABI3_FORWARD_COMPATIBILITY: 1
     steps:
       - uses: actions/checkout@v4
+      - name: Set up QEMU
+        if: matrix.target == 'aarch64'
+        uses: docker/setup-qemu-action@v3
       - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
@@ -22,7 +27,7 @@ jobs:
         uses: PyO3/maturin-action@v1
         with:
           target: ${{ matrix.target }}
-          args: --release --out dist --find-interpreter
+          args: --release --out dist
           working-directory: ./inox2d-python
           manylinux: auto
       - name: Upload wheels
@@ -35,7 +40,9 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        target: [x64, x86]
+        target: [x86_64, i686]
+    env:
+      PYO3_USE_ABI3_FORWARD_COMPATIBILITY: 1
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -45,7 +52,7 @@ jobs:
         uses: PyO3/maturin-action@v1
         with:
           target: ${{ matrix.target }}
-          args: --release --out dist --find-interpreter
+          args: --release --out dist
           working-directory: ./inox2d-python
       - name: Upload wheels
         uses: actions/upload-artifact@v4
@@ -58,6 +65,8 @@ jobs:
     strategy:
       matrix:
         target: [x86_64, aarch64]
+    env:
+      PYO3_USE_ABI3_FORWARD_COMPATIBILITY: 1
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -67,7 +76,7 @@ jobs:
         uses: PyO3/maturin-action@v1
         with:
           target: ${{ matrix.target }}
-          args: --release --out dist --find-interpreter
+          args: --release --out dist
           working-directory: ./inox2d-python
       - name: Upload wheels
         uses: actions/upload-artifact@v4
