@@ -6,8 +6,17 @@ build-backend = "maturin"
 name = "inox2d"
 version = "0.3.0"
 description = "Python bindings for Inox2D"
+readme = "README.md"
 requires-python = ">=3.8"
+license = { text = "BSD-2-Clause" }
+authors = [
+    { name = "Speykious", email = "speykious@gmail.com" },
+]
 dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/Inochi2D/inox2d"
+Repository = "https://github.com/Inochi2D/inox2d"
 
 [tool.maturin]
 features = ["pyo3/extension-module"]
