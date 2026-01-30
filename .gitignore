@@ -8,3 +8,9 @@
 
 # renderdoc capture file
 *.cap
+
+# Python
+dist/
+build/
+*.egg-info/
+__pycache__/
