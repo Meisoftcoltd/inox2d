@@ -78,6 +78,16 @@ See the [`render_webgl`](/examples/render_webgl) example.
 
 ![WebGL-rendered Aka](https://fs.speykious.dev/inox2d/inox2d-webgl-foxgirl.png)
 
+### Python Bindings
+
+Inox2D also provides Python bindings. You can install them via `pip`:
+
+```sh
+pip install inox2d
+```
+
+For more information, see the [Python bindings directory](/inox2d-python).
+
 ## Implementation
 
 Inox2D aims to support all features currently present in the standard D implementation.
