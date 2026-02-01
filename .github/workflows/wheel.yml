@@ -31,6 +31,12 @@ jobs:
           args: --release --out dist
           working-directory: ./inox2d-python
           manylinux: auto
+      - name: Test wheels
+        if: matrix.target == 'x86_64'
+        run: |
+          pip install pytest
+          pip install inox2d-python/dist/*.whl
+          pytest inox2d-python/tests/test_basic.py
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
@@ -60,6 +66,12 @@ jobs:
           target: ${{ matrix.target }}
           args: --release --out dist
           working-directory: ./inox2d-python
+      - name: Test wheels
+        if: matrix.target == 'x86_64'
+        run: |
+          pip install pytest
+          pip install (Get-ChildItem inox2d-python/dist/*.whl).FullName
+          pytest inox2d-python/tests/test_basic.py
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
@@ -84,6 +96,12 @@ jobs:
           target: ${{ matrix.target }}
           args: --release --out dist
           working-directory: ./inox2d-python
+      - name: Test wheels
+        if: matrix.target == 'aarch64'
+        run: |
+          pip install pytest
+          pip install inox2d-python/dist/*.whl
+          pytest inox2d-python/tests/test_basic.py
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
@@ -113,6 +131,7 @@ jobs:
     needs: [linux, windows, macos, sdist]
     permissions:
       contents: write
+      id-token: write
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -123,3 +142,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: dist/*
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
